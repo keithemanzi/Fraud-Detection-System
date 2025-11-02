@@ -21,7 +21,7 @@ df['normAmount'] = StandardScaler().fit_transform(df['Amount'].values.reshape(-1
 
 # Drop the original Amount Column because now we got the scaled version and Time because its not a time stamp of the transaction just seconds after theprevios one
 df = df.drop(['Amount', 'Time'], axis=1)
-# Now they were dropped so lets go baby boi
+# Now they were dropped so lets go
 print(df.head())
 print(df.shape)
 
@@ -54,6 +54,7 @@ y_pred = model.predict(X_test)
 print(confusion_matrix(y_test, y_pred))
 print(classification_report(y_test, y_pred))
 
+# Model accurate, only 136 Frauds against the 85430 legit transactions. 
 
 # Fraud is rare be attentive!!! thats what thistells the model
 model = LogisticRegression(class_weight='balanced')
@@ -85,6 +86,8 @@ import matplotlib.pyplot as plt
 model = LogisticRegression()
 model.fit(X_train, y_train)  # This must come first
 
+
+
 y_probs = model.predict_proba(X_test)[:, 1]
 
 # Compute ROC curve
@@ -95,9 +98,10 @@ roc_auc = auc(fpr, tpr)
 plt.figure()
 plt.plot(fpr, tpr, color='darkorange', lw=2, label=f'ROC curve (AUC = {roc_auc:.2f})')
 plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
-plt.xlabel('False Positive Rate')
-plt.ylabel('True Positive Rate')
+plt.xlabel('False Positive Rate') ##Legit transactions that were wrongfully flagged
+plt.ylabel('True Positive Rate') # frauds correctly detected
 plt.title('Receiver Operating Characteristic')
 plt.legend(loc='lower right')
 plt.show()
+
 
